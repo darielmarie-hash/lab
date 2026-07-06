@@ -89,7 +89,9 @@ function viewDashboard() {
     <div class="grid kpis">
       <div class="card kpi"><div class="kpi-label">Revenue (8 weeks)</div>
         <div class="kpi-value">${money(m.revenue)}</div>
-        <div class="kpi-delta up">↑ ${Math.round(((state.revenueWeekly.at(-1).value / state.revenueWeekly[0].value) - 1) * 100)}% vs first week</div></div>
+        <div class="kpi-delta ${state.revenueWeekly[0].value ? "up" : ""}">${state.revenueWeekly[0].value
+          ? "↑ " + Math.round(((state.revenueWeekly.at(-1).value / state.revenueWeekly[0].value) - 1) * 100) + "% vs first week"
+          : "No revenue recorded yet"}</div></div>
       <div class="card kpi"><div class="kpi-label">New Leads (30 days)</div>
         <div class="kpi-value">${m.newLeads30}</div>
         <div class="kpi-delta">${m.leads} total from paid ads</div></div>
@@ -143,7 +145,9 @@ function viewContacts() {
       <p class="page-sub">${state.contacts.length} contacts in your CRM</p></div>
       <div class="toolbar">
         <input type="search" id="contact-q" placeholder="Search name, tag, source…">
+        <button class="btn" id="import-csv">Import CSV</button>
         <button class="btn primary" id="add-contact">+ Add Contact</button>
+        <input type="file" id="csv-file" accept=".csv,text/csv" style="display:none">
       </div>
     </div>
     <div class="card table-wrap">
@@ -194,6 +198,64 @@ function viewContacts() {
         logActivity(state, `Contact added manually: ${d.name}`, "lead");
         commit(); render(); toast("Contact added");
       }));
+
+  $("#import-csv").addEventListener("click", () => $("#csv-file").click());
+  $("#csv-file").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    file.text().then((txt) => {
+      const added = importContactsCSV(txt);
+      e.target.value = "";
+      if (added === 0) { toast("No contacts found — the CSV needs a header row with a “name” column"); return; }
+      commit(); render(); toast(`Imported ${added} contact${added === 1 ? "" : "s"}`);
+    });
+  });
+}
+
+/* CSV import: expects a header row; recognizes name, phone, email, tags,
+   source columns (any order, case-insensitive). Handles quoted fields. */
+function parseCSVLine(line) {
+  const out = [];
+  let cur = "", inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQ) {
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = false;
+      else cur += ch;
+    } else if (ch === '"') inQ = true;
+    else if (ch === ",") { out.push(cur); cur = ""; }
+    else cur += ch;
+  }
+  out.push(cur);
+  return out.map((s) => s.trim());
+}
+
+function importContactsCSV(txt) {
+  const lines = txt.split(/\r?\n/).filter((l) => l.trim());
+  if (lines.length < 2) return 0;
+  const header = parseCSVLine(lines[0]).map((h) => h.toLowerCase());
+  const col = (name) => header.findIndex((h) => h.includes(name));
+  const iName = col("name"), iPhone = col("phone"), iEmail = col("email"),
+    iTags = col("tag"), iSource = col("source");
+  if (iName === -1) return 0;
+  let added = 0;
+  for (const line of lines.slice(1)) {
+    const cells = parseCSVLine(line);
+    const name = cells[iName];
+    if (!name) continue;
+    state.contacts.unshift({
+      id: uid("c"), name,
+      phone: iPhone !== -1 ? cells[iPhone] || "" : "",
+      email: iEmail !== -1 ? cells[iEmail] || "" : "",
+      tags: iTags !== -1 && cells[iTags] ? cells[iTags].split(/[;|]/).map((t) => t.trim()).filter(Boolean) : [],
+      source: iSource !== -1 && cells[iSource] ? cells[iSource] : "Import",
+      createdAt: new Date().toISOString(), lastVisit: null, notes: "",
+    });
+    added++;
+  }
+  if (added) logActivity(state, `Imported ${added} contacts from CSV`, "lead");
+  return added;
 }
 
 function viewPipeline() {
@@ -245,14 +307,14 @@ function viewPipeline() {
       <div class="field"><label>Contact name</label><input name="contact" required list="contact-names">
         <datalist id="contact-names">${state.contacts.map((c) => `<option value="${esc(c.name)}">`).join("")}</datalist></div>
       <div class="field"><label>Service</label><select name="service">
-        ${SERVICES.map((s) => `<option value="${esc(s.name)}">${esc(s.name)} — ${money(s.price)}</option>`).join("")}
+        ${getServices(state).map((s) => `<option value="${esc(s.name)}">${esc(s.name)} — ${money(s.price)}</option>`).join("")}
       </select></div>
       <div class="field"><label>Source</label><select name="source">
         <option>Booking Funnel</option><option>Instagram Ads</option><option>Facebook Ads</option>
         <option>Google Ads</option><option>Referral</option><option>Walk-in</option>
       </select></div>`,
       (d) => {
-        const svc = SERVICES.find((s) => s.name === d.service);
+        const svc = getServices(state).find((s) => s.name === d.service);
         state.opportunities.unshift({
           id: uid("o"), contact: d.contact, service: d.service,
           value: svc ? svc.price : state.settings.avgTicket,
@@ -301,7 +363,7 @@ function viewCalendar() {
       <div class="field"><label>Contact name</label><input name="contact" required list="contact-names2">
         <datalist id="contact-names2">${state.contacts.map((c) => `<option value="${esc(c.name)}">`).join("")}</datalist></div>
       <div class="field"><label>Service</label><select name="service">
-        ${SERVICES.map((s) => `<option>${esc(s.name)}</option>`).join("")}<option>Consultation</option>
+        ${getServices(state).map((s) => `<option>${esc(s.name)}</option>`).join("")}<option>Consultation</option>
       </select></div>
       <div class="field"><label>Date & time</label><input name="when" type="datetime-local" required></div>
       <div class="field"><label>Stylist</label><select name="staff"><option>Cash</option><option>Bri</option></select></div>`,
@@ -322,7 +384,7 @@ function viewFunnels() {
       <p class="page-sub">Conversion from first click to booked appointment</p></div>
     </div>
     <div class="grid halves">${state.funnels.map((f) => {
-      const rate = Math.round((f.steps.at(-1).count / f.steps[0].count) * 100);
+      const rate = f.steps[0].count ? Math.round((f.steps.at(-1).count / f.steps[0].count) * 100) : 0;
       return `<div class="card">
         <h3>${esc(f.name)} <span class="chip ${f.active ? "status-active" : "status-paused"}">${f.active ? "live" : "off"}</span></h3>
         <p class="card-sub">${rate}% end-to-end conversion${f.page ? ` · <a href="${esc(f.page)}" target="_blank">open page ↗</a>` : ""}</p>
@@ -467,15 +529,57 @@ function viewSettings() {
           <div class="field"><label>Average ticket ($)</label><input name="avgTicket" type="number" value="${s.avgTicket}"></div>
           <button class="btn primary" type="submit">Save Profile</button>
         </form></div>
-      <div class="card"><h3>Your Data</h3><p class="card-sub">Everything is stored locally — no subscription, no vendor lock-in</p>
-        <div class="toolbar" style="margin-top:8px">
-          <button class="btn" id="export-data">Export JSON</button>
-          <button class="btn" id="import-data">Import JSON</button>
-          <button class="btn danger" id="reset-data">Reset Demo Data</button>
+      <div>
+        <div class="card"><h3>Services & Pricing</h3><p class="card-sub">Drives the booking funnel and every booking form</p>
+          <div id="svc-rows"></div>
+          <div class="toolbar" style="margin-top:12px">
+            <button class="btn" id="svc-add">+ Add Service</button>
+            <button class="btn primary" id="svc-save">Save Services</button>
+          </div>
         </div>
-        <input type="file" id="import-file" accept=".json" style="display:none">
+        <div class="card section-gap"><h3>Your Data</h3><p class="card-sub">Everything is stored locally — no subscription, no vendor lock-in</p>
+          <div class="toolbar" style="margin-top:8px">
+            <button class="btn" id="export-data">Export JSON</button>
+            <button class="btn" id="import-data">Import JSON</button>
+          </div>
+          <div class="toolbar" style="margin-top:10px">
+            <button class="btn danger" id="clear-data">Start Fresh (clear demo data)</button>
+            <button class="btn" id="reset-data">Restore Demo Data</button>
+          </div>
+          <p class="page-sub" style="margin-top:10px">Start Fresh keeps your business profile, services, and
+            automations but removes all demo contacts, appointments, campaigns, and reviews — then add real
+            clients by hand or with <strong>Contacts → Import CSV</strong>.</p>
+          <input type="file" id="import-file" accept=".json" style="display:none">
+        </div>
       </div>
     </div>`;
+
+  const renderSvcRows = () => {
+    $("#svc-rows").innerHTML = getServices(state).map((svc, i) => `
+      <div class="toolbar" style="margin-top:8px">
+        <input data-svc-name="${i}" value="${esc(svc.name)}" placeholder="Service name" style="flex:1">
+        <input data-svc-price="${i}" type="number" min="0" value="${svc.price}" style="width:90px">
+        <button type="button" class="btn small danger" data-svc-del="${i}">✕</button>
+      </div>`).join("");
+    $("#svc-rows").querySelectorAll("[data-svc-del]").forEach((b) =>
+      b.addEventListener("click", () => {
+        state.settings.services = getServices(state).filter((_, i) => i !== Number(b.dataset.svcDel));
+        renderSvcRows();
+      }));
+  };
+  renderSvcRows();
+  $("#svc-add").addEventListener("click", () => {
+    state.settings.services = [...getServices(state), { name: "", price: 0 }];
+    renderSvcRows();
+  });
+  $("#svc-save").addEventListener("click", () => {
+    const rows = [...$("#svc-rows").querySelectorAll("[data-svc-name]")].map((inp, i) => ({
+      name: inp.value.trim(),
+      price: Number($(`[data-svc-price="${i}"]`).value) || 0,
+    })).filter((svc) => svc.name);
+    state.settings.services = rows;
+    commit(); renderSvcRows(); toast("Services saved");
+  });
 
   $("#settings-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -502,6 +606,11 @@ function viewSettings() {
         state = parsed; commit(); route(); toast("Data imported");
       } catch { toast("Import failed — not a valid export file"); }
     });
+  });
+  $("#clear-data").addEventListener("click", () => {
+    if (!confirm("Remove all demo contacts, appointments, campaigns, and reviews? Your profile and services are kept.")) return;
+    clearBusinessData(state);
+    commit(); route(); toast("Demo data cleared — you're starting fresh");
   });
   $("#reset-data").addEventListener("click", () => {
     if (!confirm("Reset all data back to the demo seed?")) return;

@@ -37,6 +37,30 @@ Funnel`), a new **opportunity** in the *New Lead* pipeline stage, a funnel-step
 increment, and an activity-feed entry. Open the dashboard in another tab and
 the new lead appears immediately (cross-tab `storage` events re-render).
 
+## Switching from demo data to your real business
+
+1. **Settings → Business Profile** — enter your real name, phone, address, and
+   average ticket, then Save.
+2. **Settings → Services & Pricing** — edit the menu to your real services and
+   prices. The booking funnel and all booking forms update automatically.
+3. **Settings → Start Fresh (clear demo data)** — removes every demo contact,
+   appointment, campaign, and review while keeping your profile, services, and
+   automations.
+4. **Contacts → Import CSV** — bulk-load your existing client list. The file
+   needs a header row; `name` is required, and `phone`, `email`, `tags`, and
+   `source` columns are picked up automatically in any order (separate multiple
+   tags with `;`). Example:
+
+   ```csv
+   name,phone,email,tags,source
+   Tanya Brooks,(555) 201-8834,tanya@example.com,VIP;Braids,Referral
+   ```
+
+5. From then on, real data accumulates on its own: leads arrive through the
+   booking funnel, appointments through Calendar, and ad results through
+   Marketing → New Campaign (update spend/leads/revenue as your ads run).
+6. **Settings → Export JSON** regularly — that file is your backup.
+
 ## Running it
 
 No build step, no install:

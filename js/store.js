@@ -40,6 +40,7 @@ function seedData() {
       email: "book@cashshairemporium.com",
       address: "412 Crown Ave, Suite 3",
       avgTicket: 145,
+      services: SERVICES.map((s) => ({ ...s })),
     },
     contacts: [
       { id: "c1", name: "Tanya Brooks", phone: "(555) 201-8834", email: "tanya.b@example.com", tags: ["VIP", "Braids"], source: "Instagram Ads", createdAt: iso(94), lastVisit: iso(6), notes: "Prefers Saturday mornings. Sensitive scalp." },
@@ -148,6 +149,28 @@ function uid(prefix) {
   return prefix + Math.random().toString(36).slice(2, 9);
 }
 
+/* Service menu lives in settings so it's editable in the UI; fall back to
+   the built-in list for stores saved before services were configurable. */
+function getServices(state) {
+  const svcs = state.settings && state.settings.services;
+  return Array.isArray(svcs) && svcs.length ? svcs : SERVICES;
+}
+
+/* Wipe demo records but keep the business profile, service menu, and
+   automation definitions — the starting point for real data. */
+function clearBusinessData(state) {
+  state.contacts = [];
+  state.opportunities = [];
+  state.appointments = [];
+  state.campaigns = [];
+  state.reviews = [];
+  state.activity = [];
+  state.revenueWeekly = state.revenueWeekly.map((w) => ({ ...w, value: 0 }));
+  state.funnels.forEach((f) => f.steps.forEach((s) => { s.count = 0; }));
+  state.automations.forEach((w) => { w.runs = 0; });
+  return state;
+}
+
 function logActivity(state, text, type) {
   state.activity.unshift({ id: uid("e"), ts: new Date().toISOString(), text, type });
   state.activity = state.activity.slice(0, 40);
@@ -156,7 +179,7 @@ function logActivity(state, text, type) {
 /* Shared by funnel.html: capture a public lead into the CRM. */
 function captureLead(lead) {
   const state = loadState();
-  const service = SERVICES.find((s) => s.name === lead.service);
+  const service = getServices(state).find((s) => s.name === lead.service);
   state.contacts.unshift({
     id: uid("c"), name: lead.name, phone: lead.phone, email: lead.email,
     tags: ["New"], source: "Booking Funnel", createdAt: new Date().toISOString(),

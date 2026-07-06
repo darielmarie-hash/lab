@@ -48,7 +48,7 @@ export function lineChart(host, points, { money = true } = {}) {
     "aria-label": "Line chart: " + points.map((p) => `${p.label} ${p.value}`).join(", ") });
   host.appendChild(svg);
 
-  const max = Math.max(...points.map((p) => p.value)) * 1.15;
+  const max = Math.max(0, ...points.map((p) => p.value)) * 1.15 || 1;
   const x = (i) => pad.l + (i * (W - pad.l - pad.r)) / (points.length - 1);
   const y = (v) => H - pad.b - (v / max) * (H - pad.t - pad.b);
 
@@ -95,7 +95,8 @@ export function lineChart(host, points, { money = true } = {}) {
 export function hBarChart(host, rows, { money = false } = {}) {
   host.innerHTML = "";
   host.classList.add("chart-host");
-  const max = Math.max(...rows.map((r) => r.value));
+  if (!rows.length) { host.innerHTML = `<div class="empty">No data yet</div>`; return; }
+  const max = Math.max(0, ...rows.map((r) => r.value)) || 1;
   const wrap = document.createElement("div");
   wrap.className = "hbars";
   rows.forEach((r, i) => {
@@ -116,11 +117,12 @@ export function hBarChart(host, rows, { money = false } = {}) {
 export function groupedBarChart(host, groups, seriesNames) {
   host.innerHTML = "";
   host.classList.add("chart-host");
+  if (!groups.length) { host.innerHTML = `<div class="empty">No campaigns yet</div>`; return; }
   const W = 640, H = 240, pad = { t: 14, r: 16, b: 42, l: 50 };
   const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, class: "chart", role: "img",
     "aria-label": "Grouped bar chart of " + seriesNames.join(" and ") });
   host.appendChild(svg);
-  const max = Math.max(...groups.flatMap((g) => g.values)) * 1.15;
+  const max = Math.max(0, ...groups.flatMap((g) => g.values)) * 1.15 || 1;
   const y = (v) => H - pad.b - (v / max) * (H - pad.t - pad.b);
   for (let g = 0; g <= 3; g++) {
     const v = (max / 3) * g;
@@ -170,12 +172,12 @@ export function groupedBarChart(host, groups, seriesNames) {
 export function funnelChart(host, steps) {
   host.innerHTML = "";
   host.classList.add("chart-host");
-  const max = steps[0].count;
+  const max = steps[0].count || 1;
   const wrap = document.createElement("div");
   wrap.className = "funnel-steps";
   steps.forEach((s, i) => {
     const pctOfTop = Math.round((s.count / max) * 100);
-    const conv = i === 0 ? null : Math.round((s.count / steps[i - 1].count) * 100);
+    const conv = i === 0 ? null : (steps[i - 1].count ? Math.round((s.count / steps[i - 1].count) * 100) : 0);
     const row = document.createElement("div");
     row.className = "funnel-step";
     row.innerHTML = `

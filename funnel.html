@@ -149,10 +149,11 @@
 
   <script src="js/store.js"></script>
   <script>
-    // Populate services from the shared store so pricing stays in one place.
+    // Populate services from the shared store so pricing stays in one place;
+    // edits made in the dashboard's Settings show up here automatically.
     const svcGrid = document.getElementById("services-grid");
     const svcSelect = document.getElementById("f-service");
-    SERVICES.forEach((s) => {
+    getServices(loadState()).forEach((s) => {
       const card = document.createElement("div");
       card.className = "svc";
       card.innerHTML = `<span>${s.name}</span><span class="price">$${s.price}</span>`;
