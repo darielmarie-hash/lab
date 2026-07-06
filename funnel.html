@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash's Hair Emporium — Book Your Appointment</title>
+  <meta name="description" content="Luxury hair, without the wait. Book your slot at Cash's Hair Emporium today.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23d4a24a'/><text x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23171310' font-family='sans-serif'>C</text></svg>">
+  <style>
+    :root {
+      --page: #0d0c0a; --surface: #191714; --surface-2: #211e1a;
+      --border: rgba(255,255,255,.1); --ink: #f5f1e8; --ink-2: #b8b2a4; --ink-3: #8a8478;
+      --gold: #d4a24a; --gold-strong: #e4b96a; --gold-deep: #96691e;
+      --gold-wash: rgba(212,162,74,.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--page); color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 15px; line-height: 1.6;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+    header { padding: 22px 0; display: flex; align-items: center; gap: 12px; }
+    .mark {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold-deep));
+      display: grid; place-items: center; color: #171310; font-weight: 800; font-size: 19px;
+    }
+    .brand { font-weight: 700; letter-spacing: .3px; }
+    .hero { text-align: center; padding: 46px 0 30px; }
+    .eyebrow {
+      display: inline-block; background: var(--gold-wash); color: var(--gold-strong);
+      border: 1px solid rgba(212,162,74,.35); border-radius: 99px;
+      padding: 5px 16px; font-size: 12.5px; font-weight: 600; letter-spacing: .04em;
+    }
+    h1 { font-size: clamp(30px, 5.5vw, 46px); line-height: 1.15; margin: 20px 0 12px; }
+    h1 em { font-style: normal; color: var(--gold-strong); }
+    .hero p { color: var(--ink-2); max-width: 540px; margin: 0 auto; }
+    .cta {
+      display: inline-block; margin-top: 26px; padding: 14px 34px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--gold-strong), var(--gold));
+      color: #171310; font-weight: 700; font-size: 16px; text-decoration: none;
+      border: none; cursor: pointer;
+    }
+    .cta:hover { filter: brightness(1.07); }
+    .proof { display: flex; justify-content: center; gap: 30px; margin-top: 30px; flex-wrap: wrap; }
+    .proof div { text-align: center; }
+    .proof .n { font-size: 22px; font-weight: 750; color: var(--gold-strong); }
+    .proof .l { font-size: 12px; color: var(--ink-3); }
+    section { padding: 34px 0; }
+    h2 { font-size: 22px; text-align: center; margin: 0 0 24px; }
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+    .svc {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px; display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .svc .price { color: var(--gold-strong); font-weight: 700; }
+    .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .quote { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .stars { color: var(--gold-strong); letter-spacing: 2px; }
+    .quote .who { color: var(--ink-3); font-size: 12.5px; margin-top: 8px; }
+    .book {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 28px; max-width: 520px; margin: 0 auto;
+    }
+    label { display: block; font-size: 12.5px; color: var(--ink-2); margin: 14px 0 5px; }
+    input, select, textarea {
+      width: 100%; background: var(--surface-2); border: 1px solid rgba(255,255,255,.16);
+      color: var(--ink); border-radius: 9px; padding: 11px 12px; font-size: 14px; font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+    .book .cta { width: 100%; margin-top: 20px; }
+    .fine { text-align: center; color: var(--ink-3); font-size: 12px; margin-top: 12px; }
+    .success { text-align: center; padding: 30px 10px; display: none; }
+    .success .big { font-size: 44px; }
+    footer { border-top: 1px solid var(--border); padding: 26px 0 40px; text-align: center; color: var(--ink-3); font-size: 12.5px; margin-top: 30px; }
+    footer a { color: var(--gold-strong); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="mark">C</div>
+      <div class="brand">Cash's Hair Emporium</div>
+    </header>
+
+    <div class="hero">
+      <span class="eyebrow">✂ NOW BOOKING — LIMITED SLOTS THIS WEEK</span>
+      <h1>Luxury hair,<br><em>without the wait.</em></h1>
+      <p>Silk press, knotless braids, installs, color, and locs — done right the first time.
+         Book online in under a minute and get an instant confirmation text.</p>
+      <a class="cta" href="#book">Book My Appointment →</a>
+      <div class="proof">
+        <div><div class="n">4.8★</div><div class="l">average rating</div></div>
+        <div><div class="n">1,200+</div><div class="l">happy clients</div></div>
+        <div><div class="n">&lt;60s</div><div class="l">booking time</div></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>Services & Pricing</h2>
+      <div class="services" id="services-grid"></div>
+    </section>
+
+    <section>
+      <h2>What Clients Say</h2>
+      <div class="quotes">
+        <div class="quote"><div class="stars">★★★★★</div>
+          <p>"Cash laid these braids PERFECTLY. Booked again before I left the chair."</p>
+          <div class="who">Tanya B. · Google</div></div>
+        <div class="quote"><div class="stars">★★★★★</div>
+          <p>"Best silk press in the city — no heat damage, lasted two weeks."</p>
+          <div class="who">Maya E. · Google</div></div>
+        <div class="quote"><div class="stars">★★★★★</div>
+          <p>"The color is stunning. My whole office asked who did my hair."</p>
+          <div class="who">Keisha M. · Google</div></div>
+      </div>
+    </section>
+
+    <section id="book">
+      <h2>Reserve Your Slot</h2>
+      <form class="book" id="book-form">
+        <label for="f-name">Your name</label>
+        <input id="f-name" name="name" required autocomplete="name" placeholder="First & last name">
+        <label for="f-phone">Mobile number</label>
+        <input id="f-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(555) 000-0000">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+        <label for="f-service">Service</label>
+        <select id="f-service" name="service"></select>
+        <label for="f-notes">Anything we should know? (optional)</label>
+        <textarea id="f-notes" name="notes" rows="2" placeholder="Hair length, inspo pics, preferred day…"></textarea>
+        <button class="cta" type="submit">Lock In My Appointment</button>
+        <div class="fine">No payment due now. We'll text you within the hour to confirm your time.</div>
+      </form>
+      <div class="success" id="success">
+        <div class="big">💛</div>
+        <h2>You're on the list!</h2>
+        <p style="color:var(--ink-2)">We got your request — expect a confirmation text shortly.<br>
+        Can't wait to see you at Cash's Hair Emporium.</p>
+      </div>
+    </section>
+
+    <footer>
+      Cash's Hair Emporium · 412 Crown Ave, Suite 3 · (555) 014-2288<br>
+      <a href="index.html">Owner dashboard</a>
+    </footer>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script>
+    // Populate services from the shared store so pricing stays in one place.
+    const svcGrid = document.getElementById("services-grid");
+    const svcSelect = document.getElementById("f-service");
+    SERVICES.forEach((s) => {
+      const card = document.createElement("div");
+      card.className = "svc";
+      card.innerHTML = `<span>${s.name}</span><span class="price">$${s.price}</span>`;
+      svcGrid.appendChild(card);
+      const opt = document.createElement("option");
+      opt.value = s.name;
+      opt.textContent = `${s.name} — $${s.price}`;
+      svcSelect.appendChild(opt);
+    });
+
+    // Lead capture: writes straight into the shared CRM store.
+    document.getElementById("book-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(e.target).entries());
+      captureLead(d);
+      e.target.style.display = "none";
+      document.getElementById("success").style.display = "block";
+      document.getElementById("success").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
