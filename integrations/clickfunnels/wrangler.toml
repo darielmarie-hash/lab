@@ -1,0 +1,10 @@
+name = "cashes-quiz-tagger"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+[vars]
+CF_WORKSPACE_HOST = "darieltaylorsteamwo4484a.myclickfunnels.com"
+CF_WORKSPACE_ID = "432626"
+# Secrets (set with `wrangler secret put <NAME>`, never committed):
+#   CF_API_TOKEN
+#   WEBHOOK_TOKEN
