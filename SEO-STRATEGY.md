@@ -1,153 +1,166 @@
 # Cashé's Hair Emporium — SEO Automation Strategy (Zero New Software)
 
-A strategic plan for automating SEO on **casheshair.com** using only tools you
-already have: Claude (this subscription), your WordPress/WooCommerce site, and
-free Google services. No Ahrefs, Semrush, Surfer, Jasper, or agency retainers.
+The plan for automating SEO on **casheshair.com** using only what you already
+have: your Claude subscription, your WordPress/WooCommerce site, and free
+Google services. Synthesized from four reference videos and a live audit of
+the site (Aug 2026).
 
-The approach follows the "specialist SEO team built with Claude Code" method
-(per the reference videos, e.g. *"I Built An Entire Specialist SEO Team With
-Claude Code In 14 Minutes"*): instead of paying for SEO SaaS, you define a set
-of specialist AI agents — researcher, strategist, writer, optimizer, auditor —
-that run inside Claude Code against free data sources (Google Search Console,
-your own site's REST API) and publish directly to WordPress.
+**The four videos, in one line each:**
+1. *Claude Code SEO Workflow That Automates Traffic* — a weekly "SEO Content
+   Autopilot" skill: bottom-of-funnel keywords → pillar content → interlinked
+   money pages → repurpose the blog RSS into social posts.
+2. *Claude Code SEO Masterclass ($500K / 50K clicks)* — the fundamentals:
+   winning-keyword filters, keyword clusters, anti-slop voice files, SERP
+   reverse-engineering, service×location "zipper" pages, an 80+ item on-page
+   checklist, Lighthouse-to-100 technical loop, and off-page warnings.
+3. *AI SEO Agent (GEO)* — generative engine optimization: audit → fix → re-audit
+   so ChatGPT/Claude/Perplexity/AI Overviews actually recommend your business.
+4. *Specialist SEO Team in 14 Minutes* — the org chart: 8 specialist agents +
+   one orchestrator, grounded in real Search Console/Analytics/Business-Profile
+   data, run on a schedule, human approval before anything publishes.
 
 ---
 
-## 1. What the live audit found (Aug 2026)
-
-Stack detected on casheshair.com:
+## 1. Live audit snapshot (Aug 2026)
 
 | Component | Status | Why it matters |
 |---|---|---|
-| WordPress 7.0.2 + WooCommerce 11 | ✅ current | REST API available for automated publishing |
-| Yoast SEO (free) | ✅ installed | Sitemaps, titles/metas — no paid SEO plugin needed |
-| Site Kit by Google | ✅ installed | Search Console + GA4 are already connected — your free rank/traffic data source |
-| Elementor | ✅ | Page building; watch page-speed weight |
-| Jetpack (free tier) | ✅ | MCP write access is gated behind Jetpack AI/Complete (paid) — **skip it**; the free path is WordPress Application Passwords + REST API |
+| WordPress 7.0.2 + WooCommerce 11 | ✅ | Free REST API for automated publishing — no site rebuild needed (video 2's Next.js/Vercel build applies to new sites, not yours) |
+| Yoast SEO (free) | ✅ | Sitemaps, titles/metas, robots.txt already handled |
+| Site Kit by Google | ✅ | **Search Console + GA4 already connected** — your free data layer |
+| Elementor | ✅ | Watch Lighthouse/page-speed weight (video 2's technical loop applies) |
+| Jetpack (free) | ✅ | MCP write access needs a paid plan — skip it; use WP Application Passwords instead |
 
-Content inventory:
+Content: **41 posts** — three strong 2026 posts (sew-in tangling, scalp care
+under wigs, coily texture-match guide), ~26 generic 2024 posts, and a 19-month
+publishing gap. **34 products** across 5 signature bundle lines (Capri Silk,
+Belize Cascade, Bali Breeze, Persia Whirl, Fiji Coil), pro methods (I-Tip,
+K-Tip, Tape-In, Hybrid Weft), Bee Girl, and growth/edge products. Product
+metas are already decent; the blog and GEO layers are the opportunity.
+Attribute archives (`pa_color`, `pa_length`, etc.) are in the sitemap — thin
+pages to noindex. Two audiences: retail (largely textured/coily hair) and
+**Salon Pros** (B2B). Plus a Chicago local identity, founded 2018.
 
-- **41 blog posts.** Three strong, specific 2026 posts (sew-in tangling,
-  scalp care under wigs/extensions, coily texture-match guide) and ~26 generic
-  2024 posts (e.g. "Latest Trends in Healthier Hair Care") that read like
-  commodity content — thin, unfocused, and a **large content gap from Nov 2024
-  to Jun 2026**.
-- **34 products**: 5 signature bundle lines (Capri Silk, Belize Cascade, Bali
-  Breeze, Persia Whirl, Fiji Coil), pro install methods (I-Tip, K-Tip, Tape-In,
-  Hybrid Weft), Bee Girl line, growth/edge products.
-- **Product page metas are already good** (e.g. Capri Silk's title/meta are
-  well-written) — recent optimization is visible. The blog is the weak layer.
-- **Attribute sitemaps are exposed** (`pa_color`, `pa_length`, `pa_size`,
-  `pa_texture`, `pa_weight`) — these generate thin, near-duplicate archive
-  pages that dilute crawl budget and should be noindexed.
-- Distinct audiences: **retail buyers** (women, largely textured/coily hair)
-  and **Salon Pros** (B2B stylists, 10% bulk program) — two keyword universes.
+## 2. Strategy core (what all four videos agree on)
 
-## 2. The strategy in one paragraph
+- **Bottom-of-funnel first.** Target long, specific, high-intent queries —
+  not "hair extensions" but "tape-in extensions that won't damage 4a edges."
+  Blogs take informational intent; money pages take commercial intent.
+- **Winning-keyword filter (video 2):** keyword difficulty ≤30, volume ≥100,
+  right intent. Never let Claude guess keywords from thin air — feed it real
+  data (Search Console first; see §5).
+- **Keyword clusters:** every page targets a root keyword + a cluster of
+  secondary variants so one page ranks for 50–100 queries.
+- **The zipper, adapted (video 2).** For a plumber it's service×city; for
+  Cashé's it's **texture × product line** ("body wave bundles for 4a hair",
+  "best curly bundles for 4c blend") and **method × concern** ("tape-ins for
+  fine hair", "k-tip vs i-tip for thick hair") — plus a Chicago layer.
+  Tasteful count, not hundreds.
+- **Interlinking ecosystem (video 1):** service/category pages ↔ high-intent
+  blog posts, so a visitor landing on either can bounce to the other and buy.
+  Blogs build topical authority that "raises the tide" for money pages.
+- **Anti-slop voice system (video 2).** Reference files Claude loads before
+  writing: `voice.md`, `stories.md`, `stats.md`, `opinions.md`, `humor.md` —
+  built from Cashé's real story (Chicago, est. 2018), real product knowledge,
+  customer anecdotes, and the tone of the three 2026 posts (the house style
+  standard). Content is king; personality is why people stay on the page.
+- **SERP reverse-engineering:** before writing any post, analyze the top-3
+  ranking pages for the keyword and match the winning average (word count,
+  H2 structure, topics, images).
+- **GEO (video 3).** Optimize to be *recommended by AI engines*, not just
+  ranked: Organization + LocalBusiness schema, quotable Q&A blocks on
+  category/product pages, a plain-language About page, visible reviews with
+  schema, and periodic "does AI recommend us?" checks. Expect a 14–21 day lag
+  after fixes.
+- **Human in the loop (video 4).** Nothing publishes itself. Everything lands
+  as a WordPress **draft** for one-click approval in wp-admin.
 
-Win with **money pages + striking-distance refreshes first**, then build
-**hub-and-spoke content** around the questions your buyers actually search
-("tape-in vs i-tip", "how to keep a sew-in from tangling", "best shampoo for
-wigs and extensions"), each hub linking down to your product pages. Power it
-with a weekly automated loop: Claude pulls Search Console data, finds queries
-where you rank 5–20 (page one is one edit away), rewrites those pages, and
-publishes drafts via the WordPress REST API for your one-click approval. That
-loop — not any single article — is where the compounding impact is.
+## 3. The specialist team (video 4's org chart, adapted)
 
-## 3. Ranked priorities (maximum impact first)
+One orchestrator + specialists, built as skills/agents in this repo:
 
-1. **Fix index bloat (1 hour, one-time).** In Yoast → Search Appearance,
-   set product attribute archives (color/length/size/texture/weight) and tag
-   archives to `noindex`. Removes dozens of thin pages competing with your
-   real category pages.
-2. **Striking-distance sprint (week 1–2).** Pull GSC queries at positions
-   5–20 with impressions. Each is a page-one candidate with a single targeted
-   edit (title, intro, one new section answering the query, internal links).
-   This is the fastest measurable traffic gain available.
-3. **Category/collection pages as landing pages.** Ensure there are indexable
-   category pages for each texture (straight, body wave, loose wave, deep
-   wave, curly) and each method (tape-in, i-tip, k-tip, weft) with 200–400
-   words of real buying guidance + FAQ schema. These target the highest-value
-   commercial keywords ("raw virgin body wave bundles", "tape-in extensions
-   for black hair").
-4. **Refresh, don't just add.** The ~26 generic 2024 posts either get rewritten
-   to the standard of your 2026 posts (specific, persona-targeted, linking to
-   products) or get merged/redirected into stronger pieces. Google rewards the
-   refresh date + quality jump; stale thin posts drag the whole domain.
-5. **Hub-and-spoke new content (2 posts/week, automated drafting).**
-   - *Install & maintenance hub*: sew-in care, tape-in aftercare, i-tip vs
-     k-tip vs tape-in comparison, how long each method lasts, removal guides.
-   - *Texture hub*: matching bundles to 3c/4a/4b/4c hair, blending guides per
-     signature line (the coily-girl texture-match post is the template — it's
-     your best post).
-   - *Care-product hub*: wig/extension shampoo guides, edge care, growth oil
-     science — each linking to the relevant Bee Girl / Edge Entity product.
-   - *Salon Pro hub (B2B)*: wholesale buying guides, "what to stock in your
-     salon", client-retention content → feeds the Salon Pro program.
-6. **Local + brand layer.** A Chicago-focused page (LocalBusiness schema,
-   Google Business Profile — free) captures "hair extensions Chicago" and
-   builds the E-E-A-T story: founded 2018, real owner, real store.
-7. **Schema upgrades.** WooCommerce emits Product schema already; add
-   FAQPage schema on category pages and Article + author schema on posts
-   (Yoast free handles most of this once authors have real bios).
+| Agent | Job | Output |
+|---|---|---|
+| **Intake** (run once) | Build `client.md`: business facts, services, brand voice, audiences | Context file every other agent reads |
+| **Keyword Researcher** | Mine GSC queries + autocomplete/People-Also-Ask; apply the winning-keyword filter; cluster by intent and audience | `keywords.csv` + priority map |
+| **Technical Auditor** | Lighthouse loop to ~100, sitemap/robots checks, index-bloat, broken links | Fix list → applied via drafts/patches |
+| **Analytics Agent** | Synthesize GSC + GA4: striking-distance queries (pos. 5–20), decaying pages, CTR gaps | Weekly opportunities list |
+| **GEO Agent** | Audit AI visibility, fix schema/Q&A/entity clarity, re-test the customer questions against AI engines | GEO fix list + citation log |
+| **On-Page Copywriter** | Category/product page rewrites + 80-item on-page checklist (one H1, keyword in first 100 words, 3–5 internal links, 2–3 external, meta title/desc) while keeping the voice | WP drafts |
+| **Blog Writer** | 2 posts/week from the keyword map: cluster + SERP analysis + voice files + free Pexels images; *asks you questions* about real experience before writing | WP drafts |
+| **Local SEO** | Chicago page, LocalBusiness schema, Google Business Profile posts/updates | Drafts + GBP checklist |
+| **Reporter** | Weekly scorecard: clicks/impressions/position deltas, AI citations, what shipped | `reports/seo-week-N.md` |
 
-## 4. The specialist agent team (built in this repo, run in Claude Code)
+Run order for the first cycle (per video 4): keyword research → technical
+audit → analytics → GEO report; their outputs become homework for the
+copywriter, blog writer, and local agents; reporter closes the loop.
 
-Create these as skills/prompt files under `.claude/` — each is a role you
-invoke, exactly as in the videos, except pointed at your real data:
+## 4. Publishing & indexing mechanics
 
-| Agent | Job | Data in | Output |
-|---|---|---|---|
-| **Keyword Researcher** | Mine GSC queries, autocomplete, "People Also Ask"; cluster by intent and audience (retail vs Salon Pro) | GSC API export, competitor SERPs | Keyword map CSV committed to repo |
-| **Content Strategist** | Maintain the hub-and-spoke map; pick the next 2 topics weekly; assign target keyword + internal links | Keyword map, sitemap inventory | Content briefs |
-| **Writer** | Draft posts in the voice of your 2026 posts (specific, texture-aware, product-linked); never publishes directly | Brief + 2–3 existing posts as style reference | Draft via WP REST API (`status: draft`) |
-| **On-Page Optimizer** | Striking-distance refreshes: retitle, restructure, add FAQ, internal links | GSC positions 5–20 | Edit drafts for approval |
-| **Technical Auditor** | Monthly crawl: broken links, orphan pages, missing metas, slow pages, index bloat | Site crawl via curl/sitemap | Issue list with fixes |
-| **Performance Tracker** | Weekly report: clicks/impressions/position deltas per page; flags wins and decays | GSC API | `reports/seo-week-N.md` |
+- **Publish via WP REST API** (free, built into WordPress): create an
+  Application Password (Users → Profile), then Claude POSTs drafts to
+  `/wp-json/wp/v2/posts`. Confirmed live on casheshair.com.
+- **Request indexing** for new/updated pages in Search Console's URL
+  inspection (~10/day) — indexed in about a day instead of weeks.
+- **Pace the ramp (video 2):** publishing cadence grows gradually (start
+  ~2–3/week including refreshes); a sudden flood of pages reads as spam.
+- **Social repurposing (video 1):** each published post gets 2–3 social
+  captions generated from the blog RSS feed. Free scheduling via Jetpack
+  Social (already installed) or Meta Business Suite — no Blotato needed.
 
-Human in the loop: **everything publishes as a WordPress draft**; you approve
-in wp-admin. That keeps quality control while automating 90% of the labor.
+## 5. Free replacements for every paid tool in the videos
 
-## 5. Free-tool wiring (the "no new software" part)
+| Videos' paid tool | Purpose | Your free path |
+|---|---|---|
+| Arvo | Article generation + auto-post | Claude writes; WP REST API publishes |
+| Arvo backlink pool | Reciprocal backlinks | **Skip — link networks are the thing video 2 warns gets sites penalized** |
+| Blotato | Social scheduling | Jetpack Social / Meta Business Suite |
+| Semrush | Keyword volume/difficulty | GSC (real first-party queries) + Semrush free tier (~10 lookups/day) + autocomplete/PAA |
+| Windsor.ai ($20/mo) | Pipe GSC/GA4/GBP into Claude | Google's own free APIs, or weekly CSV exports dropped into this repo — Site Kit already wired the accounts |
+| DataForSEO | Live keyword/SERP/AI-visibility data | *Optional, pay-as-you-go pennies* (a research run costs cents; $5 minimum deposit). The one paid item worth considering later — not required to start |
+| GEO audit SaaS | AI-visibility score | Claude runs the same checks directly (schema present? quotable answers? entity clarity?) + manual asks of ChatGPT/Claude/Perplexity |
+| SEO agency ($1–20K/mo) | All of the above | The agent team in §3 |
 
-- **Publishing:** WordPress **Application Passwords** (built into core, free).
-  Create one at Users → Profile → Application Passwords, then Claude posts via
-  `POST /wp-json/wp/v2/posts` with basic auth. No Jetpack upgrade, no Zapier.
-- **Rank & traffic data:** **Google Search Console API** (free). Site Kit means
-  GSC is already verified; add a Google Cloud service account (free tier) or
-  export CSVs manually each week and drop them in this repo for the agents.
-- **Scheduling:** GitHub Actions cron in this repo (free) or Claude Code
-  Routines — e.g. Monday 8am: run Tracker + Optimizer; Wednesday: Writer
-  drafts 2 posts from the strategist's queue.
-- **Keyword discovery beyond GSC:** Google autocomplete + People Also Ask
-  (scraped politely by the researcher agent), plus Google Trends — all free.
-- **This repo** is the system of record: keyword maps, briefs, reports, and
-  the agent prompt files live here, versioned.
+## 6. Ranked priorities (maximum impact first)
 
-## 6. Operating cadence
+1. **Noindex the attribute archives** (Yoast → Search Appearance; 1 hour).
+2. **Striking-distance sprint:** GSC queries at positions 5–20 → one targeted
+   edit each → request indexing. Fastest measurable win.
+3. **Category pages as landing pages** for texture/method money keywords,
+   each with buying guidance + FAQ schema (commercial-intent zipper pages).
+4. **GEO fixes:** Organization/LocalBusiness schema, Q&A blocks, About-page
+   entity clarity, review schema; then track AI citations monthly.
+5. **Refresh the ~26 generic 2024 posts** to the 2026 house style (or merge
+   and redirect); stale thin content drags the domain.
+6. **New hub content, 2/week:** install & maintenance hub, texture-match hub,
+   care-product hub, Salon Pro B2B hub — every post interlinked to money pages.
+7. **Local layer:** Google Business Profile active + Chicago page.
+8. **Earned links, sparingly:** broken-link swaps, guest posts, journalist
+   queries. Never bought bulk backlinks/PBNs — video 2's strongest warning.
 
-**Weekly (≈1 hr of your time, rest automated):**
-- Mon — Tracker report + striking-distance list generated.
-- Tue — Optimizer submits 3–5 refresh drafts → you approve.
-- Wed — Writer submits 2 new-post drafts → you approve.
-- Fri — 15-min review: what moved, what's next.
+## 7. Operating cadence
 
-**Monthly:** Technical audit; refresh 4–6 of the old 2024 posts; review hub
-coverage vs the keyword map.
+**Weekly (~1 hr of your time):**
+- Mon — Analytics + Reporter run: scorecard, striking-distance list.
+- Tue — On-Page Copywriter submits 3–5 refresh drafts → approve.
+- Wed — Blog Writer submits 2 post drafts (+ social captions) → approve;
+  request indexing on everything published.
+- Fri — 15-min review; queue next week's keywords.
 
-**30 / 60 / 90 outcomes to expect:**
-- 30 days: index bloat fixed, 12–15 striking-distance refreshes live, first
-  measurable position improvements on refreshed pages.
-- 60 days: category pages rebuilt as landing pages, 8+ new hub posts,
-  refreshed posts reaching page one for their target queries.
-- 90 days: full hub coverage for one hub (install & maintenance), old-post
-  refresh complete, compounding organic clicks visible in the weekly report —
-  the loop now runs itself with your approvals.
+**Monthly:** Technical audit; GEO re-check ("does AI recommend Cashé's
+yet?"); refresh 4–6 old posts; review hub coverage.
 
-## 7. What NOT to spend on
+**Scheduling:** Claude Code Routines or a GitHub Actions cron in this repo —
+the video-4 pattern of a "fortnightly keyword map" routine, adapted.
 
-- Rank trackers (GSC position data is free and first-party).
-- AI writing SaaS (Claude is the writer, with your product truth as context).
-- Paid SEO plugins (Yoast free + manual schema covers this site's needs).
-- Backlink marketplaces (risk > reward; earn links via the Salon Pro network,
-  local Chicago press, and supplier/brand pages instead).
+**30/60/90 expectations:** 30 days — bloat fixed, 12–15 refreshes live, first
+position gains. 60 days — category landing pages + GEO fixes shipped, 8+ hub
+posts, refreshed posts hitting page one. 90 days — first hub complete, AI
+citation checks turning up, the loop self-running on approvals.
+
+## 8. What NOT to spend on
+
+Rank trackers (GSC is first-party and free), AI-writing SaaS, paid SEO
+plugins, bulk backlink services or "backlink pools" (Google treats link
+schemes as spam — the one feature from the videos to actively avoid), and
+agency retainers ($1–20K/mo for what §3 does).
