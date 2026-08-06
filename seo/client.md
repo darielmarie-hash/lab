@@ -35,6 +35,15 @@ Every agent reads this file first. Update it when facts change.
 - Product metas recently optimized; category pages and GEO layer are the gap.
 - Attribute archives (pa_color/length/size/texture/weight) to be noindexed.
 
+## Key URLs (verified live 2026-08-06)
+- About: /about/  (NOT /about-us/ — that 404s)
+- Salon Pros: /salon-pros/ ; apply: /salon-pro-apply/
+- Scalp hub: /scalp-reset/ ; Custom orders: /custom-orders/
+- Bundles category: /product-category/virgin-hair-bundles/
+- Method categories (currently EMPTY — products not assigned):
+  /product-category/salon-products/{i-tip,k-tip,tape-in,hybrid-weft}/
+- First-run audit findings: see seo/reports/*-2026-08-06.md
+
 ## Strategy reference
 Full plan: /SEO-STRATEGY.md. Priorities: index bloat → striking-distance
 refreshes → category landing pages → GEO fixes → 2024-post refreshes →
